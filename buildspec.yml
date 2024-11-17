@@ -16,6 +16,20 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 539247488585.dkr.ecr.sa-east-1.amazonaws.com/tutorial5-app:latest
+      - echo Writing Image Definitions file...
+      - printf '[{"name":"Container-app-python","imageUri":"539247488585.dkr.ecr.sa-east-1.amazonaws.com/tutorial5-app:latest"}]' > imagedefinitions.json
+      - printf '{"ImageURI":"539247488585.dkr.ecr.sa-east-1.amazonaws.com/tutorial5-app:latest"}' > imageDetail.json
+      - cat imagedefinitions.json 
 artifacts:
   files:
     - '**/*'
+    - imagedefinitions.json
+    - imageDetail.json
+  secondary-artifacts:
+    DefinitionArtifact:
+      files:
+        - appspec.yaml
+        - taskdef.json
+    ImageArtifact:
+      files:
+        - imageDetail.json
